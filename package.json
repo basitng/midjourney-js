@@ -2,9 +2,10 @@
   "name": "midjourney-js",
   "version": "1.0.0",
   "description": "Midjourney-Js allows developers to easily use midjourney api without complications.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "dev": "npx ts-node test-folder/test.ts"
   },
   "repository": {
     "type": "git",
@@ -14,12 +15,17 @@
     "Midjourney"
   ],
   "author": "Ajaga Abdulbasit (Code Ninja)",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/basitng/midjourney-js/issues"
   },
   "homepage": "https://github.com/basitng/midjourney-js#readme",
   "dependencies": {
+    "@types/node-fetch": "^2.6.4",
     "axios": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.1",
+    "typescript": "^5.1.6"
   }
 }

@@ -1,11 +1,13 @@
-const { APIRequest } = require("midjourney/irequest");
+import { APIRequest } from "./midjourney";
 
 class Midjourney {
-  constructor(api_key, callback_uri) {
+  private api_request: APIRequest;
+
+  constructor(api_key: string, callback_uri: any) {
     this.api_request = new APIRequest(api_key, callback_uri);
   }
 
-  async result(seed) {
+  async result(seed: { taskId: string }) {
     const task_id = seed.taskId;
 
     if (!task_id) {
@@ -36,6 +38,7 @@ class Midjourney {
               "unknown",
               {},
               "failed-please-resubmit",
+              //@ts-ignore
             ].includes(response.status)
           ) {
             console.log("Task is pending. Waiting for it to start...");
@@ -48,34 +51,35 @@ class Midjourney {
           continue;
         }
 
+        // @ts-ignore
         if (!["running", "pending", "unknown"].includes(response.status)) {
           break;
         }
       } catch (e) {
-        return { status: "error", message: e.toString() };
+        return { status: "error", message: (e as any).toString() };
       }
     }
   }
 
-  imagine(prompt) {
+  imagine(prompt: string) {
     return this.api_request.imagine(prompt);
   }
 
-  upscale(task_id, position) {
+  upscale(task_id: string, position: string) {
     return this.api_request.upscale_image(task_id, position);
   }
 
-  seed(task_id) {
+  seed(task_id: string) {
     return this.api_request.seed(task_id);
   }
 
-  describe(image_path, filename) {
+  describe(image_path: string, filename: string) {
     return this.api_request.describe_image(image_path, filename);
   }
 }
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+function sleep(ms: number) {
+  return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
-module.exports = Midjourney;
+export default Midjourney;
